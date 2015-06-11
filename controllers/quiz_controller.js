@@ -1,4 +1,5 @@
 var models = require('../models/models.js');
+var temas = ["Otro", "Humanidades", "Ocio", "Ciencia", "Tecnología"];
 
 exports.load = function(req, res, next, quizId){
     models.Quiz.findById(req.params.quizId).then(
@@ -41,10 +42,10 @@ exports.answer = function(req, res){
 
 exports.new = function(req, res){
     var quiz = models.Quiz.build(
-        {pregunta: "Pregunta", respuesta: "Respuesta"}
+        {pregunta: "Pregunta", respuesta: "Respuesta", tema:"Otro"}
     );
 
-    res.render('quizes/new', {quiz: quiz, errors: []});
+    res.render('quizes/new', {quiz: quiz, temas: temas, errors: []});
 };
 
 exports.create = function(req, res){
@@ -55,10 +56,10 @@ exports.create = function(req, res){
         .then(
             function(err){
                 if(err){
-                    res.render('quizes/new', {quiz: quiz, errors: err.errors});
+                    res.render('quizes/new', {quiz: quiz, temas: temas, errors: err.errors});
                 } else {
                     quiz
-                        .save({fields: ["pregunta", "respuesta"]})
+                        .save({fields: ["pregunta", "respuesta", "tema"]})
                         .then(function(){ res.redirect('/quizes'); });
                 }
             }
@@ -67,23 +68,23 @@ exports.create = function(req, res){
 
 exports.edit = function(req, res){
     var quiz = req.quiz;
-
-    res.render('quizes/edit', {quiz: quiz, errors: []});
+    res.render('quizes/edit', {quiz: quiz, temas: temas, errors: []});
 };
 
 exports.update = function(req, res){
     req.quiz.pregunta  = req.body.quiz.pregunta;
     req.quiz.respuesta = req.body.quiz.respuesta;
+    req.quiz.tema      = req.body.quiz.tema;
 
     req.quiz
         .validate()
         .then(
             function(err){
                 if (err){
-                    res.render('quizes/edit', {quiz: req.quiz, errors: err.errors});
+                    res.render('quizes/edit', {quiz: req.quiz, temas: temas, errors: err.errors});
                 } else {
                     req.quiz
-                        .save({fields: ["pregunta", "respuesta"]})
+                        .save({fields: ["pregunta", "respuesta", "tema"]})
                         .then(function(){ res.redirect('/quizes');});
                 }
             }
