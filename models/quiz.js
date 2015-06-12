@@ -11,7 +11,9 @@ module.exports = function(sequelize, DataTypes){
                                             },
                                 tema:       {
                                                 type: DataTypes.STRING,
-                                                validate: {notEmpty : {msg: "-> Falta Tema" }}
+                                                validate: {isIn : {
+                                                    args: [["Otro", "Humanidades", "Ocio", "Ciencia", "Tecnología"]],
+                                                    msg:  "-> Temática errónea" }}
                                             }
                             });
 }
