@@ -33,8 +33,6 @@ function buscar(req){
 };
 
 exports.show = function(req, res){
-for(var j in req.quiz)
-    console.log(j);
     res.render('quizes/show', {quiz: req.quiz, errors: []});
 };
 
