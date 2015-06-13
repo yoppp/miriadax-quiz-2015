@@ -2,7 +2,10 @@ var models = require('../models/models.js');
 var temas = ["Otro", "Humanidades", "Ocio", "Ciencia", "Tecnología"];
 
 exports.load = function(req, res, next, quizId){
-    models.Quiz.findById(req.params.quizId).then(
+    models.Quiz.find({
+        where:   {id: Number(quizId)},
+        include: [{ model: models.Comment}]
+    }).then(
         function(quiz){
             if(quiz){
                 req.quiz = quiz;
@@ -30,6 +33,8 @@ function buscar(req){
 };
 
 exports.show = function(req, res){
+for(var j in req.quiz)
+    console.log(j);
     res.render('quizes/show', {quiz: req.quiz, errors: []});
 };
 
