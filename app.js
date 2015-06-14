@@ -29,6 +29,21 @@ app.use(partials());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(function(req, res, next){
+    if(req.session.user){
+        var fechaSession = req.session.fecha || null;
+        var tiempoActual = (new Date()).valueOf();
+        if(fechaSession && (tiempoActual-fechaSession > 120000)){
+            delete req.session.user;
+            delete req.session.fecha;
+            next();
+            return;
+        }
+        req.session.fecha = tiempoActual;
+    }
+    next();
+});
+
+app.use(function(req, res, next){
     if(!req.path.match(/\/login|\/logout/)){
         req.session.redir = req.path;
     }
