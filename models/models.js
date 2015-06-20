@@ -23,9 +23,19 @@ var sequelize = new Sequelize(DB_name, user, pwd,
   }      
 );
 
-var Quiz = sequelize.import(path.join(__dirname, 'quiz'));
+var Quiz    = sequelize.import(path.join(__dirname, 'quiz'));
+var Comment = sequelize.import(path.join(__dirname, 'comment'));
 
-exports.Quiz = Quiz;
+Comment.belongsTo(Quiz);
+Quiz.hasMany(Comment,{
+    'constraints': true,
+    'onDelete':'cascade',
+    'onUpdate':'cascade',
+    'hooks': true
+}); 
+
+exports.Quiz    = Quiz;
+exports.Comment = Comment;
 
 sequelize.sync().then(function(){
     Quiz.count().then(function(count){
@@ -46,3 +56,5 @@ sequelize.sync().then(function(){
         };
     });
 });
+
+exports.queries = sequelize;
