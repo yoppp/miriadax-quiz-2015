@@ -1,5 +1,5 @@
 var models = require('../models/models.js');
-var preguntasConComentarioSQL = 'SELECT count(DISTINCT(`QuizId`)) AS `count` FROM `Comments` AS `Comment`;';
+var preguntasConComentarioSQL = 'SELECT count(DISTINCT("QuizId")) AS "count" FROM "Comments" AS "Comment";';
 
 exports.index = function(req, res, next){
     var estadisticas = new Array();
